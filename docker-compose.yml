@@ -12,9 +12,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ledger.rule=Host(`ledger.srv620544.hstgr.cloud`)"
-      - "traefik.http.routers.ledger.entrypoints=https"
+      - "traefik.http.routers.ledger.entrypoints=websecure"
       - "traefik.http.routers.ledger.tls=true"
-      - "traefik.http.routers.ledger.tls.certresolver=default"
+      - "traefik.http.routers.ledger.tls.certresolver=letsencrypt"
       - "traefik.http.services.ledger.loadbalancer.server.port=3000"
     networks:
       - traefik
