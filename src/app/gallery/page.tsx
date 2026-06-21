@@ -74,9 +74,24 @@ export default function GalleryPage() {
 
         {/* Receipt cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
-          {receipts.map((r) => (
+          {receipts.filter((r) => {
+            if (activeChip === "All") return true;
+            if (activeChip === "Verified") return r.verified;
+            if (activeChip === "Unverified") return !r.verified;
+            return r.category === activeChip;
+          }).map((r) => (
             <ReceiptCard key={r.vendor} receipt={r} />
           ))}
+          {receipts.filter((r) => {
+            if (activeChip === "All") return true;
+            if (activeChip === "Verified") return r.verified;
+            if (activeChip === "Unverified") return !r.verified;
+            return r.category === activeChip;
+          }).length === 0 && (
+            <div className="col-span-full text-center py-12 text-ink-400 text-sm">
+              No receipts match <span className="font-semibold text-ink-600">{activeChip}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

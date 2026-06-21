@@ -48,7 +48,13 @@ export default function TransactionsPage() {
                 ))}
               </div>
               {/* Rows */}
-              {transactions.map((t, i) => (
+              {transactions.filter((t) => {
+                const chip = chips[activeChip];
+                if (chip === "All") return true;
+                if (chip === "Verified") return t.verified;
+                if (chip === "Unverified") return !t.verified;
+                return t.category === chip;
+              }).map((t, i) => (
                 <div key={i} className="grid grid-cols-[104px_1.5fr_1fr_130px_120px_34px] items-center gap-3 px-5 py-3.5 border-b border-line-faint cursor-pointer hover:bg-violet-50 transition-colors">
                   <span className="text-xs text-ink-500 whitespace-nowrap" style={{ fontFamily: "var(--font-mono)" }}>{t.date}</span>
                   <div className="flex items-center gap-2.5 min-w-0">

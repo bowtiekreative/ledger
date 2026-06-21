@@ -19,8 +19,20 @@ export default function AskAIPage() {
 
   const send = (text: string) => {
     if (!text.trim()) return;
-    setMessages((m) => [...m, { role: "user", text }, { role: "ai", text: `Thinking about "${text}"...` }]);
+    setMessages((m) => [...m, { role: "user", text }]);
     setInput("");
+    // Simulate AI response
+    setTimeout(() => {
+      const lower = text.toLowerCase();
+      let reply = "";
+      if (lower.includes("total") || lower.includes("spend")) reply = "Your total spend this year is $14,201 across 182 receipts and 8 categories.";
+      else if (lower.includes("category")) reply = "Your top spending category is Software at $5,248 (28%), followed by Food at $3,124 (17%).";
+      else if (lower.includes("software")) reply = "You've spent $5,248 on software this year. Top vendors: AWS ($1,529), Adobe ($55/mo), Notion ($10/mo).";
+      else if (lower.includes("food") || lower.includes("travel")) reply = "Food: $3,124 · Travel: $2,890. Food is 8% higher than travel this year.";
+      else if (lower.includes("$100") || lower.includes("over")) reply = "Found 12 receipts over $100. Largest: Delta Air Lines ($340) and Dr. Smith ($120).";
+      else reply = "I can look up spending trends, category breakdowns, vendor totals, and receipt details. What specifically would you like to know?";
+      setMessages((m) => [...m, { role: "ai", text: reply }]);
+    }, 1200);
   };
 
   return (
