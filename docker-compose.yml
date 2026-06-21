@@ -1,0 +1,24 @@
+services:
+  ledger:
+    build: .
+    container_name: ledger-app
+    restart: unless-stopped
+    ports:
+      - "32890:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ledger.rule=Host(`ledger.srv620544.hstgr.cloud`)"
+      - "traefik.http.routers.ledger.entrypoints=https"
+      - "traefik.http.routers.ledger.tls=true"
+      - "traefik.http.routers.ledger.tls.certresolver=default"
+      - "traefik.http.services.ledger.loadbalancer.server.port=3000"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
