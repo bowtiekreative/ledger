@@ -1,8 +1,37 @@
 "use client";
 
-import { Mail } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Mail, AlertCircle } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 export default function LoginPage() {
+  const { login } = useAuth();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address");
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      const ok = login(email, password);
+      if (ok) {
+        router.push("/gallery");
+      } else {
+        setError("Login failed. Please try again.");
+      }
+      setLoading(false);
+    }, 600);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row min-h-dvh w-full">
       {/* LEFT — Violet gradient panel */}
@@ -11,7 +40,6 @@ export default function LoginPage() {
           background: "linear-gradient(135deg, #2D2B38 0%, #1B1A22 35%, #6442EE 100%)"
         }}
       >
-        {/* Decorative blobs */}
         <div className="absolute -top-20 -left-20 w-56 h-56 rounded-full bg-white/[0.03] blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-violet-500/[0.08] blur-3xl pointer-events-none" />
 
@@ -31,7 +59,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Receipt illustrations */}
           <div className="flex gap-3 mb-6 justify-center lg:justify-start">
             <div className="w-16 h-16 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md">
               <ReceiptIcon />
@@ -75,21 +102,48 @@ export default function LoginPage() {
             <div className="flex-1 h-px bg-line" />
           </div>
 
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          {error && (
+            <div className="flex items-center gap-2 mb-4 px-3 py-2.5 bg-danger-50 border border-danger-100 rounded-[11px] text-xs text-danger-600">
+              <AlertCircle size={14} /> {error}
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-[11px] text-ink-400 font-semibold tracking-wide uppercase mb-1.5">Email</label>
-              <input type="email" className="w-full px-3 py-3 rounded-[11px] border border-line bg-surface text-sm text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-1 focus:ring-violet-300" placeholder="you@example.com" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-3 rounded-[11px] border border-line bg-surface text-sm text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-1 focus:ring-violet-300"
+                placeholder="you@example.com"
+                required
+              />
             </div>
             <div>
               <label className="block text-[11px] text-ink-400 font-semibold tracking-wide uppercase mb-1.5">Password</label>
-              <input type="password" className="w-full px-3 py-3 rounded-[11px] border border-line bg-surface text-sm text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-1 focus:ring-violet-300" placeholder="••••••••" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-3 rounded-[11px] border border-line bg-surface text-sm text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-1 focus:ring-violet-300"
+                placeholder="••••••••"
+                required
+              />
             </div>
             <div className="flex items-center gap-2">
               <input type="checkbox" id="remember" className="w-4 h-4 rounded-[6px] border-line accent-violet-500" defaultChecked />
               <label htmlFor="remember" className="text-xs text-ink-500">Remember me</label>
               <a href="#" className="ml-auto text-xs text-ink-400 hover:text-violet-500 transition-colors">Forgot?</a>
             </div>
-            <button className="w-full py-3 rounded-[11px] bg-violet-600 text-white font-semibold text-sm hover:bg-violet-700 transition-colors shadow-sm" type="submit">
+            <button
+              className="w-full py-3 rounded-[11px] bg-violet-600 text-white font-semibold text-sm hover:bg-violet-700 transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : null}
               Sign in
             </button>
           </form>

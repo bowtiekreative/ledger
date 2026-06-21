@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lexend, Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -35,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${lexend.variable} ${outfit.variable} ${spaceGrotesk.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
