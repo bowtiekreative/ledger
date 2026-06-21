@@ -2,11 +2,11 @@ import Sidebar from "@/components/Sidebar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen w-full bg-canvas overflow-hidden">
+    <div className="flex min-h-screen w-full bg-canvas">
       <Sidebar />
-      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+      <main className="flex-1 min-w-0 lg:ml-0">
         {children}
-      </div>
+      </main>
     </div>
   );
 }

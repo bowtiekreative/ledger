@@ -2,8 +2,7 @@
 
 import Header from "@/components/Header";
 import { useState } from "react";
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Pencil } from "lucide-react";
 
 const chips = ["All", "Food", "Software", "Travel", "Health", "Business", "Verified", "Unverified"];
 
@@ -26,55 +25,59 @@ export default function TransactionsPage() {
   return (
     <div>
       <Header title="Transactions" subtitle="All receipts and expenses" showSearch showScan={false} />
-      <div className="flex-1 overflow-y-auto px-8 py-6 pb-16">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 pb-16">
         {/* Chips */}
-        <div className="flex items-center flex-wrap gap-[9px] mb-5">
+        <div className="flex items-center flex-wrap gap-2 mb-5">
           {chips.map((label, i) => (
             <button key={label} onClick={() => setActiveChip(i)}
-              className={`inline-flex items-center gap-2 px-[14px] py-[7px] rounded-full text-[13px] font-medium transition-all cursor-pointer
-                ${activeChip === i ? "bg-ink-900 text-white" : "text-ink-600 hover:bg-surfaceSunken border border-lineStrong"}`}>
+              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-medium transition-all cursor-pointer
+                ${activeChip === i ? "bg-ink-900 text-white" : "text-ink-600 hover:bg-surface-sunken border border-line"}`}>
               {label}
             </button>
           ))}
         </div>
 
-        {/* Table */}
+        {/* Table — scrollable on mobile */}
         <div className="bg-surface border border-line rounded-[18px] overflow-hidden">
-          {/* Header */}
-          <div className="grid grid-cols-[104px_1.5fr_1fr_130px_120px_34px] items-center gap-[14px] px-[22px] py-[14px] border-b border-line bg-surfaceSunken">
-            {["Date", "Vendor", "Category", "Amount", "Status", ""].map((h) => (
-              <span key={h} className="text-[11.5px] font-bold tracking-[0.04em] uppercase text-ink-500 text-right" style={{ textAlign: h === "Amount" || h === "" ? "right" : "left" }}>{h}</span>
-            ))}
-          </div>
-          {/* Rows */}
-          {transactions.map((t, i) => (
-            <div key={i} className="grid grid-cols-[104px_1.5fr_1fr_130px_120px_34px] items-center gap-[14px] px-[22px] py-[15px] border-b border-lineFaint cursor-pointer hover:bg-violet-50 transition-colors duration-150">
-              <span style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "12.5px", color: "#6A6878" }}>{t.date}</span>
-              <div className="flex items-center gap-[11px] min-w-0">
-                <span className="w-[30px] h-[30px] shrink-0 rounded-[9px] flex items-center justify-center" style={{ background: t.catColor, color: "#fff", fontWeight: 700, fontSize: "11px" }}>{t.icon}</span>
-                <span style={{ fontFamily: "var(--font-outfit)", fontWeight: 600, fontSize: "14.5px", color: "#1B1A22" }} className="truncate">{t.vendor}</span>
+          <div className="overflow-x-auto">
+            <div className="min-w-[700px]">
+              {/* Header */}
+              <div className="grid grid-cols-[104px_1.5fr_1fr_130px_120px_34px] items-center gap-3 px-5 py-3.5 border-b border-line bg-surface-sunken">
+                {["Date", "Vendor", "Category", "Amount", "Status", ""].map((h) => (
+                  <span key={h} className="text-[11.5px] font-bold tracking-wider uppercase text-ink-500" style={{ textAlign: h === "Amount" || h === "" ? "right" : "left" }}>{h}</span>
+                ))}
               </div>
-              <span className="inline-flex items-center gap-[7px]">
-                <span className="w-[8px] h-[8px] rounded-full" style={{ background: t.catColor }} />
-                <span className="text-[13px] text-ink-700">{t.category}</span>
-              </span>
-              <span style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "15px", fontWeight: 700, color: "#1B1A22" }} className="text-right">{t.amount}</span>
-              <span>
-                {t.verified ? (
-                  <span className="inline-flex items-center gap-[6px] bg-success-100 text-success-600 rounded-full px-[11px] py-[4px] text-[12px] font-semibold">
-                    <span className="w-[6px] h-[6px] rounded-full bg-success-500" />Verified
+              {/* Rows */}
+              {transactions.map((t, i) => (
+                <div key={i} className="grid grid-cols-[104px_1.5fr_1fr_130px_120px_34px] items-center gap-3 px-5 py-3.5 border-b border-line-faint cursor-pointer hover:bg-violet-50 transition-colors">
+                  <span className="text-xs text-ink-500 whitespace-nowrap" style={{ fontFamily: "var(--font-mono)" }}>{t.date}</span>
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className="w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-white font-bold text-[11px]" style={{ background: t.catColor }}>{t.icon}</span>
+                    <span className="text-sm font-semibold text-ink-900 truncate" style={{ fontFamily: "var(--font-display)" }}>{t.vendor}</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full" style={{ background: t.catColor }} />
+                    <span className="text-sm text-ink-700">{t.category}</span>
                   </span>
-                ) : (
-                  <span className="inline-flex items-center gap-[6px] bg-warning-100 text-amber-700 rounded-full px-[11px] py-[4px] text-[12px] font-semibold">
-                    <span className="w-[6px] h-[6px] rounded-full bg-amber-500" />Pending
+                  <span className="text-right text-sm font-bold text-ink-900" style={{ fontFamily: "var(--font-mono)" }}>{t.amount}</span>
+                  <span className="flex justify-end">
+                    {t.verified ? (
+                      <span className="inline-flex items-center gap-1 bg-teal-100 text-teal-600 rounded-full px-2.5 py-1 text-xs font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />Verified
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-600 rounded-full px-2.5 py-1 text-xs font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />Pending
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>
-              <span className="text-ink-300 inline-flex justify-center">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.4 11.05 12.25 20.2a5 5 0 0 1-7.07-7.07l9.19-9.19a3 3 0 0 1 4.24 4.24l-9.2 9.19a1 1 0 0 1-1.41-1.41l8.49-8.49"/></svg>
-              </span>
+                  <span className="text-ink-300 inline-flex justify-center">
+                    <Pencil size={14} />
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

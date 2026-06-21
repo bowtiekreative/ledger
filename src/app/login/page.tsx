@@ -4,93 +4,139 @@ import { Mail } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex flex-col lg:flex-row min-h-dvh w-full">
       {/* LEFT — Violet gradient panel */}
-      <div className="flex-1 min-w-0 relative overflow-hidden text-white flex flex-col justify-between"
-        style={{ background: "linear-gradient(155deg, #6442EE, #4F31D6 70%, #3a219c)" }}>
-        {/* Decorative bubbles */}
-        <div className="absolute w-[340px] h-[340px] rounded-full opacity-80" style={{ background: "rgba(255,255,255,.08)", top: "-90px", right: "-80px" }} />
-        <div className="absolute w-[240px] h-[240px] rounded-full" style={{ background: "rgba(255,255,255,.06)", bottom: "-70px", left: "-50px" }} />
+      <div className="relative flex flex-col flex-1 lg:flex-[4] items-center justify-center px-6 sm:px-10 py-16 text-white overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, #2D2B38 0%, #1B1A22 35%, #6442EE 100%)"
+        }}
+      >
+        {/* Decorative blobs */}
+        <div className="absolute -top-20 -left-20 w-56 h-56 rounded-full bg-white/[0.03] blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-violet-500/[0.08] blur-3xl pointer-events-none" />
 
-        {/* Logo */}
-        <div className="relative flex items-center gap-[11px] p-12">
-          <div className="w-10 h-10 rounded-[11px] flex items-center justify-center" style={{ background: "rgba(255,255,255,.18)" }}>
-            <Mail size={21} strokeWidth={2} />
-          </div>
-          <span style={{ fontFamily: "var(--font-outfit)", fontWeight: 700, fontSize: "19px" }}>Ledger</span>
-        </div>
-
-        {/* Pitch */}
-        <div className="relative max-w-[420px] p-12">
-          {/* Receipt cards illustration */}
-          <div className="flex gap-[14px] mb-[34px]">
-            <div className="w-[120px] h-[150px] bg-white rounded-[12px]" style={{ transform: "rotate(-7deg)", boxShadow: "0 20px 40px -16px rgba(0,0,0,.4)", padding: "14px" }}>
-              <div className="h-1 w-[60%] rounded-full mb-3" style={{ background: "var(--color-coral-500)" }} />
-              <div className="h-[5px] w-[90%] rounded-full mb-2" style={{ background: "#eee" }} />
-              <div className="h-[5px] w-[70%] rounded-full mb-2" style={{ background: "#eee" }} />
-              <div className="h-[5px] w-[80%] rounded-full" style={{ background: "#eee" }} />
-              <div className="mt-[30px]" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, color: "#1B1A22", fontSize: "15px" }}>$84.20</div>
+        <div className="max-w-md relative z-10 text-center lg:text-left">
+          <div className="flex items-center justify-center lg:justify-start gap-2 mb-8">
+            <div className="bg-white/20 backdrop-blur-sm rounded-full flex items-center gap-2.5 pl-1 pr-3.5 py-1">
+              <Mail size={14} />
+              <span className="text-xs font-semibold text-white">372</span>
             </div>
-            <div className="w-[120px] h-[150px] bg-white rounded-[12px] mt-[18px]" style={{ transform: "rotate(5deg)", boxShadow: "0 20px 40px -16px rgba(0,0,0,.4)", padding: "14px" }}>
-              <div className="h-1 w-[60%] rounded-full mb-3" style={{ background: "#16B7A8" }} />
-              <div className="h-[5px] w-[85%] rounded-full mb-2" style={{ background: "#eee" }} />
-              <div className="h-[5px] w-[65%] rounded-full mb-2" style={{ background: "#eee" }} />
-              <div className="h-[5px] w-[78%] rounded-full" style={{ background: "#eee" }} />
-              <div className="mt-[30px]" style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, color: "#1B1A22", fontSize: "15px" }}>$15.00</div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-full flex items-center gap-1.5 pl-1 pr-3.5 py-1">
+              <span className="w-2 h-2 rounded-full bg-teal-300" />
+              <span className="text-xs font-bold text-white">$84.20</span>
+            </div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-full flex items-center gap-1.5 pl-1 pr-3.5 py-1">
+              <span className="w-2 h-2 rounded-full bg-amber-200" />
+              <span className="text-xs font-bold text-white">$15.00</span>
             </div>
           </div>
-          <h2 className="mb-3" style={{ fontFamily: "var(--font-outfit)", fontWeight: 700, fontSize: "30px", lineHeight: 1.2, letterSpacing: "-0.02em" }}>
+
+          {/* Receipt illustrations */}
+          <div className="flex gap-3 mb-6 justify-center lg:justify-start">
+            <div className="w-16 h-16 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md">
+              <ReceiptIcon />
+            </div>
+            <div className="w-16 h-16 rounded-xl bg-white/10 backdrop-blur-md border border-white/5 flex items-center justify-center shadow-md">
+              <ReceiptIcon2 />
+            </div>
+            <div className="w-16 h-16 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md">
+              <ReceiptIcon3 />
+            </div>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-3" style={{ fontFamily: "var(--font-display)" }}>
             Let your inbox do the bookkeeping.
           </h2>
-          <p className="text-[15px] leading-[1.6]" style={{ color: "rgba(255,255,255,.82)" }}>
+          <p className="text-sm sm:text-base text-white/70 leading-relaxed">
             Ledger scans your email for receipts and invoices, then sorts every expense for you — calm, clear, and made for every kind of brain.
           </p>
-        </div>
 
-        <span className="relative text-[12.5px] p-12" style={{ color: "rgba(255,255,255,.6)" }}>A Bow Tie Kreative product</span>
+          <div className="mt-8 flex items-center justify-center lg:justify-start gap-2.5 text-[11px] text-white/50">
+            <div className="w-5 h-5 rounded bg-white/10 border border-white/10" />
+            <span>A Bow Tie Kreative product</span>
+          </div>
+        </div>
       </div>
 
-      {/* RIGHT — Form panel */}
-      <div className="w-[480px] max-w-[48vw] shrink-0 bg-surface flex items-center justify-center p-10">
-        <div className="w-full max-w-[340px] flex flex-col gap-5">
-          <div className="flex flex-col gap-[6px]">
-            <h1 style={{ fontFamily: "var(--font-outfit)", fontWeight: 700, fontSize: "26px", color: "#1B1A22", letterSpacing: "-0.02em" }}>Welcome back</h1>
-            <span className="text-[14px] text-ink-500">Sign in to see your receipts.</span>
-          </div>
+      {/* RIGHT — Form */}
+      <div className="flex flex-col flex-1 lg:flex-[3] items-center justify-center px-6 sm:px-10 py-10 bg-canvas">
+        <div className="w-full max-w-sm">
+          <h1 className="text-2xl sm:text-3xl font-bold text-ink-900 text-center mb-8" style={{ fontFamily: "var(--font-display)" }}>
+            Welcome back
+          </h1>
 
-          <button className="flex items-center justify-center gap-[10px] h-[46px] rounded-[11px] border border-lineStrong bg-surface text-ink-800 font-semibold text-[14.5px] cursor-pointer hover:bg-surfaceSunken transition-colors">
-            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-            Continue with Google
+          <button className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-[11px] border border-line bg-surface text-sm font-medium text-ink-700 hover:bg-surface-sunken transition-colors mb-6">
+            <GoogleIcon /> Continue with Google
           </button>
 
-          <div className="flex items-center gap-3 text-ink-300"><span className="flex-1 h-px bg-line" /><span className="text-[12px]">or</span><span className="flex-1 h-px bg-line" /></div>
-
-          <label className="flex flex-col gap-[7px]">
-            <span className="text-[12.5px] font-semibold text-ink-700">Email</span>
-            <input type="email" className="border-[1.5px] border-lineStrong rounded-[11px] px-[14px] py-3 text-[15px] text-ink-900 bg-surface outline-none focus:border-violet-500 transition-colors"
-              style={{ fontFamily: "var(--font-lexend)" }} placeholder="you@example.com" />
-          </label>
-          <label className="flex flex-col gap-[7px]">
-            <span className="text-[12.5px] font-semibold text-ink-700">Password</span>
-            <input type="password" className="border-[1.5px] border-lineStrong rounded-[11px] px-[14px] py-3 text-[15px] text-ink-900 bg-surface outline-none focus:border-violet-500 transition-colors"
-              style={{ fontFamily: "var(--font-lexend)" }} placeholder="••••••••" />
-          </label>
-
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer text-[13px] text-ink-600">
-              <input type="checkbox" defaultChecked className="w-4 h-4 accent-violet-600" />
-              Remember me
-            </label>
-            <a href="#" className="text-[13px] text-violet-600 font-semibold no-underline hover:underline">Forgot?</a>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-line" />
+            <span className="text-[11px] text-ink-300 font-medium tracking-wide uppercase">or</span>
+            <div className="flex-1 h-px bg-line" />
           </div>
 
-          <button className="w-full h-[48px] rounded-[11px] bg-violet-600 text-white font-semibold text-[15px] cursor-pointer hover:bg-violet-700 transition-colors">
-            Sign in
-          </button>
+          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <div>
+              <label className="block text-[11px] text-ink-400 font-semibold tracking-wide uppercase mb-1.5">Email</label>
+              <input type="email" className="w-full px-3 py-3 rounded-[11px] border border-line bg-surface text-sm text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-1 focus:ring-violet-300" placeholder="you@example.com" />
+            </div>
+            <div>
+              <label className="block text-[11px] text-ink-400 font-semibold tracking-wide uppercase mb-1.5">Password</label>
+              <input type="password" className="w-full px-3 py-3 rounded-[11px] border border-line bg-surface text-sm text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-1 focus:ring-violet-300" placeholder="••••••••" />
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="remember" className="w-4 h-4 rounded-[6px] border-line accent-violet-500" defaultChecked />
+              <label htmlFor="remember" className="text-xs text-ink-500">Remember me</label>
+              <a href="#" className="ml-auto text-xs text-ink-400 hover:text-violet-500 transition-colors">Forgot?</a>
+            </div>
+            <button className="w-full py-3 rounded-[11px] bg-violet-600 text-white font-semibold text-sm hover:bg-violet-700 transition-colors shadow-sm" type="submit">
+              Sign in
+            </button>
+          </form>
 
-          <p className="text-center text-[13.5px] text-ink-500">New here? <a href="#" className="text-violet-600 font-semibold no-underline hover:underline">Create an account</a></p>
+          <p className="mt-6 text-center text-xs text-ink-400">
+            New here? <a href="#" className="font-semibold text-ink-700 hover:text-violet-500 transition-colors">Create an account</a>
+          </p>
         </div>
       </div>
     </div>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16">
+      <path fill="#4285F4" d="M15.54 8.2c0-.56-.05-1.1-.14-1.62H8v3.07h4.22c-.18 1.03-.73 1.9-1.55 2.48v2.06h2.51c1.47-1.35 2.32-3.34 2.32-5.99z" />
+      <path fill="#34A853" d="M8 16c2.09 0 3.84-.69 5.13-1.88l-2.51-2.06c-.69.46-1.58.73-2.62.73-2.02 0-3.73-1.36-4.34-3.19H1.1v2.13C2.38 14.2 4.97 16 8 16z" />
+      <path fill="#FBBC05" d="M3.66 9.6c-.16-.46-.25-.95-.25-1.46s.09-1 .25-1.46V4.55H1.1A7.86 7.86 0 000 8.14c0 1.27.3 2.47.84 3.53l2.82-2.2z" />
+      <path fill="#EA4335" d="M8 3.19c1.14 0 2.16.39 2.97 1.16l2.23-2.23C11.84.78 10.09 0 8 0 4.97 0 2.38 1.8 1.1 4.55l2.56 2.2C4.27 4.91 5.98 3.19 8 3.19z" />
+    </svg>
+  );
+}
+
+function ReceiptIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect x="5" y="5" width="18" height="18" rx="3" fill="white" fillOpacity="0.1" />
+      <path d="M9 12h10M9 16h6" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ReceiptIcon2() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect x="5" y="5" width="18" height="18" rx="3" fill="#16B7A8" fillOpacity="0.15" />
+      <path d="M9 11h6M9 14h4M9 17h8" stroke="#16B7A8" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ReceiptIcon3() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect x="5" y="5" width="18" height="18" rx="3" fill="#F5A524" fillOpacity="0.15" />
+      <path d="M9 13l3-3 3 3M12 10v8" stroke="#F5A524" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

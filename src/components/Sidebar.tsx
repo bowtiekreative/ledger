@@ -2,82 +2,154 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import {
   LayoutGrid, TrendingUp, CreditCard, FolderOpen, FileText,
-  PieChart, Lightbulb, Sparkles, Mail, LogOut, Receipt
+  PieChart, Lightbulb, Sparkles, Mail, ChevronDown, Menu, X
 } from "lucide-react";
 
 const navItems = [
-  { href: "/gallery", label: "Gallery", icon: LayoutGrid },
-  { href: "/insights", label: "Insights", icon: TrendingUp },
-  { href: "/transactions", label: "Transactions", icon: CreditCard },
-  { href: "/categories", label: "Categories", icon: FolderOpen },
-  { href: "/reports", label: "Reports", icon: FileText },
-  { href: "/investments", label: "Investments", icon: PieChart },
-  { href: "/advice", label: "Advice", icon: Lightbulb },
-  { href: "/ask-ai", label: "Ask AI", icon: Sparkles },
+  { name: "Gallery", href: "/gallery", icon: LayoutGrid },
+  { name: "Insights", href: "/insights", icon: TrendingUp },
+  { name: "Transactions", href: "/transactions", icon: CreditCard },
+  { name: "Categories", href: "/categories", icon: FolderOpen },
+  { name: "Reports", href: "/reports", icon: FileText },
+  { name: "Sync Status", href: "#", icon: PieChart },
+  { name: "Insights", href: "#", icon: Lightbulb },
+  { name: "Logged In?", href: "#", icon: Sparkles },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [hiddenGroups, setHiddenGroups] = useState<Record<string, boolean>>({});
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
-    <aside className="shrink-0 w-[248px] h-screen bg-surface border-r border-line flex flex-col">
-      {/* Logo */}
-      <div className="flex items-center gap-[11px] px-6 pt-[22px] pb-5">
-        <div className="w-[38px] h-[38px] rounded-[11px] bg-violet-500 flex items-center justify-center text-white"
-          style={{ boxShadow: "0 4px 14px -4px rgba(100,66,238,.55)" }}>
-          <Receipt size={20} strokeWidth={2} />
-        </div>
-        <div className="leading-[1.1]">
-          <span className="block" style={{ fontFamily: "var(--font-outfit)", fontWeight: 700, fontSize: "16px", color: "#1B1A22", letterSpacing: "-0.01em" }}>Ledger</span>
-          <span className="block text-[11px] text-ink-500">by Bow Tie Kreative</span>
-        </div>
-      </div>
+    <>
+      {/* Mobile hamburger */}
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="lg:hidden fixed top-4 left-4 z-60 p-2 rounded-[11px] bg-surface shadow-md border border-line text-ink-700"
+        aria-label="Toggle menu"
+      >
+        {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-4 py-2 space-y-[2px] overflow-y-auto">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href;
-          return (
-            <Link key={item.href} href={item.href}
-              className={`flex items-center gap-3 px-3 py-[10px] rounded-[11px] text-[13px] font-medium transition-all duration-150
-                ${isActive
-                  ? "bg-violet-50 text-violet-700 font-semibold"
-                  : "text-ink-500 hover:bg-surfaceSunken hover:text-ink-700"}`}>
-              <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-overlay z-40"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
 
-      {/* Gmail Status */}
-      <div className="px-4 pb-3">
-        <div className="rounded-[14px] p-[13px] bg-teal-50 border border-teal-100 flex flex-col gap-2">
-          <div className="flex items-center gap-[8px]">
-            <span className="w-[8px] h-[8px] rounded-full bg-teal-600" style={{ boxShadow: "0 0 0 3px #ECFAF8" }} />
-            <span className="text-[12.5px] font-semibold text-teal-700">Gmail connected</span>
+      {/* Sidebar */}
+      <aside
+        className={`
+          bg-surface border-r border-line flex flex-col
+          transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
+          z-50
+          /* Mobile: off-canvas sliding */
+          fixed lg:static top-0 left-0 h-full w-64
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        {/* Header */}
+        <Link href="/gallery"
+          className="flex items-center justify-center px-5 pt-5 pb-2"
+        >
+          <svg width="94" height="24" viewBox="0 0 94 24" fill="none">
+            <rect width="24" height="24" rx="4" fill="#7C5CF6" />
+            <path d="M7 12L10.5 15.5L17 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <text x="28" y="17" fontFamily="Outfit,sans-serif" fontWeight="600" fontSize="15" fill="#332C5C">Ledger</text>
+          </svg>
+        </Link>
+
+        <div className="flex items-center justify-center pb-3">
+          <span className="text-[11px] text-ink-300 tracking-wider font-medium">RECEIPT TRACKING</span>
+        </div>
+
+        {/* User */}
+        <div className="px-3 pb-3">
+          <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-[11px]">
+            <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-semibold text-xs tracking-wide" style={{ fontFamily: "var(--font-mono)" }}>
+              PM
+            </div>
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-ink-700">Peter Musterfrau</div>
+              <div className="text-xs text-ink-300 truncate">peter@gmail.com</div>
+            </div>
           </div>
-          <span className="text-[11.5px] text-ink-500 leading-[1.45]">Last sync 4 min ago · auto-scan on</span>
         </div>
-      </div>
 
-      {/* User Profile */}
-      <div className="border-t border-line px-4 pt-3 pb-3">
-        <div className="flex items-center gap-[10px] px-[4px] py-[4px]">
-          <div className="w-[34px] h-[34px] rounded-full bg-coral-100 text-coral-600 flex items-center justify-center"
-            style={{ fontFamily: "var(--font-outfit)", fontWeight: 700, fontSize: "14px" }}>RP</div>
-          <div className="flex flex-col leading-[1.2] min-w-0 flex-1">
-            <span className="text-[13px] font-semibold text-ink-900 truncate whitespace-nowrap">Ryan Perez</span>
-            <span className="text-[11px] text-ink-500">Free plan</span>
-          </div>
-          <button className="w-[30px] h-[30px] rounded-[8px] border border-lineStrong bg-surface text-ink-500 flex items-center justify-center hover:bg-surfaceSunken hover:text-ink-700 transition-colors cursor-pointer">
-            <LogOut size={15} />
+        {/* Gmail status */}
+        <div className="px-3 pb-3">
+          <button
+            onClick={() => setHiddenGroups((p) => ({ ...p, gmail: !p.gmail }))}
+            className="flex items-center justify-between gap-2 w-full px-3 py-2 text-sm text-ink-500 hover:text-ink-700 transition-colors rounded-[11px] hover:bg-surface-sunken"
+          >
+            <span className="flex items-center gap-2">
+              <Mail size={15} />
+              <span>Gmail</span>
+              <span className="ml-0.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[9px] bg-teal-100 text-teal-600 text-[11px] font-bold tracking-wide">CONNECTED</span>
+            </span>
+            <ChevronDown size={14} className={`transition-transform ${hiddenGroups["gmail"] ? "-rotate-90" : ""}`} />
           </button>
+          {!hiddenGroups["gmail"] && (
+            <div className="mt-0.5 space-y-0.5 px-3 text-[11px] text-ink-300">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                <span>Inbox synced</span>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
-    </aside>
+
+        {/* Nav */}
+        <nav className="px-3 space-y-0.5 flex-1 overflow-y-auto">
+          {navItems.map((item) => {
+            const active = pathname === item.href;
+            if (item.href.startsWith("#")) return (
+              <div key={item.name}
+                className={`flex items-center gap-2.5 w-full px-3 py-2 rounded-[11px] text-sm ${active ? "bg-surface-sunken font-semibold text-violet-600" : "text-ink-500 hover:bg-surface-sunken hover:text-ink-700"} transition-colors`}
+              >
+                <item.icon size={16} />
+                <span>{item.name}</span>
+              </div>
+            );
+            return (
+              <Link key={item.name} href={item.href}
+                className={`flex items-center gap-2.5 w-full px-3 py-2 rounded-[11px] text-sm ${active ? "bg-surface-sunken font-semibold text-violet-600" : "text-ink-500 hover:bg-surface-sunken hover:text-ink-700"} transition-colors`}
+              >
+                <item.icon size={16} />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Bottom */}
+        <div className="px-3 pb-3">
+          <Link href="/ask-ai"
+            className={`flex items-center gap-2.5 w-full px-3 py-2 rounded-[11px] text-sm ${pathname === "/ask-ai" ? "bg-violet-50 text-violet-600 font-semibold" : "text-ink-500 hover:bg-surface-sunken"} transition-colors`}
+          >
+            <Sparkles size={16} />
+            <span>Ask AI</span>
+            {/* Pulser blinker */}
+            <span className="ml-auto w-2 h-2 rounded-full bg-coraltint animate-[blink_1s_infinite]" />
+          </Link>
+        </div>
+
+        {/* credits */}
+        <div className="px-4 pb-3 pt-1 text-[10px] text-ink-200 flex items-center justify-between">
+          <span>lakeit styled.</span>
+          <span className="text-ink-100">Helios v1.2</span>
+        </div>
+      </aside>
+    </>
   );
 }

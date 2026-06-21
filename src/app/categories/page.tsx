@@ -5,55 +5,58 @@ import { Utensils, Briefcase, Code, Plane, Stethoscope, Plus } from "lucide-reac
 import { useState } from "react";
 
 const categories = [
-  { label: "Food", count: 42, spent: 1046, budget: 1200, color: "#F0436B", tint: "#FFF1F4", icon: Utensils },
-  { label: "Software", count: 18, spent: 915, budget: 1000, color: "#2E8CF6", tint: "#EEF5FE", icon: Code },
-  { label: "Travel", count: 7, spent: 588, budget: 800, color: "#16B7A8", tint: "#ECFAF8", icon: Plane },
-  { label: "Health", count: 4, spent: 343, budget: 500, color: "#FB6F92", tint: "#FFF1F4", icon: Stethoscope },
-  { label: "Business", count: 11, spent: 327, budget: 500, color: "#D98512", tint: "#FEF7E8", icon: Briefcase },
-  { label: "Other", count: 6, spent: 160, budget: 300, color: "#6A6878", tint: "#FAF8F4", icon: Briefcase },
+  { name: "Food", icon: Utensils, count: "64 receipts", budget: "$2,000", spent: "$1,780", pct: 87, color: "#F0436B" },
+  { name: "Business", icon: Briefcase, count: "42 receipts", budget: "$5,000", spent: "$4,500", pct: 92, color: "#16B7A8" },
+  { name: "Software", icon: Code, count: "28 receipts", budget: "$3,500", spent: "$2,850", pct: 74, color: "#2E8CF6" },
+  { name: "Travel", icon: Plane, count: "19 receipts", budget: "$4,000", spent: "$3,200", pct: 69, color: "#7C5CF6" },
+  { name: "Health", icon: Stethoscope, count: "12 receipts", budget: "$2,500", spent: "$1,650", pct: 65, color: "#FB6F92" },
+  { name: "Other", icon: Plus, count: "17 receipts", budget: "$1,500", spent: "$1,050", pct: 53, color: "#F5A524" },
 ];
 
 export default function CategoriesPage() {
   return (
     <div>
-      <Header title="Categories" subtitle="Organize and budget your spending" showSearch={false} showScan={false} />
-      <div className="flex-1 overflow-y-auto px-8 py-6 pb-16">
-        <div className="grid grid-cols-auto-fill gap-6" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(282px, 1fr))" }}>
-          {categories.map((c, i) => {
-            const pct = Math.round((c.spent / c.budget) * 100);
-            const Icon = c.icon;
-            return (
-              <div key={i} className="bg-surface border border-line rounded-[18px] p-5 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="w-[42px] h-[42px] rounded-[12px] flex items-center justify-center" style={{ background: c.tint, color: c.color }}>
-                    <Icon size={20} strokeWidth={2} />
-                  </span>
-                  <div className="flex flex-col gap-[1px] min-w-0 flex-1">
-                    <span style={{ fontFamily: "var(--font-outfit)", fontWeight: 600, fontSize: "15.5px", color: "#1B1A22" }}>{c.label}</span>
-                    <span className="text-[12px] text-ink-500">{c.count} receipts</span>
-                  </div>
-                  <button className="w-[32px] h-[32px] rounded-[9px] border border-lineStrong bg-surface text-ink-500 flex items-center justify-center hover:bg-surfaceSunken cursor-pointer transition-colors shrink-0">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-                  </button>
+      <Header title="Categories" subtitle="Budgets and spending by category" />
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 pb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+          {categories.map((c) => (
+            <div key={c.name}
+              className="rounded-[18px] border border-line bg-surface p-5 hover:shadow-sm transition-shadow cursor-pointer"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-[11px] flex items-center justify-center text-white" style={{ background: c.color }}>
+                  <c.icon size={18} />
                 </div>
                 <div>
-                  <div className="flex items-baseline justify-between mb-2">
-                    <span style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "18px", fontWeight: 700, color: "#1B1A22" }}>${c.spent.toLocaleString()}</span>
-                    <span className="text-[12.5px] text-ink-500">of ${c.budget.toLocaleString()}</span>
-                  </div>
-                  <div className="h-[9px] rounded-full bg-surfaceSunken overflow-hidden">
-                    <div className="h-full rounded-full transition-all" style={{ width: `${Math.min(pct, 100)}%`, background: c.color }} />
-                  </div>
-                  <div className="mt-[7px] text-[12px] text-ink-500">{pct}% of monthly budget used</div>
+                  <h3 className="text-sm font-bold text-ink-800" style={{ fontFamily: "var(--font-display)" }}>{c.name}</h3>
+                  <p className="text-[11px] text-ink-400">{c.count}</p>
                 </div>
               </div>
-            );
-          })}
-          <button className="bg-transparent border-[1.5px] border-dashed border-lineStrong rounded-[18px] p-5 flex flex-col items-center justify-center gap-[10px] text-ink-500 min-h-[160px] cursor-pointer hover:border-violet-500 hover:text-violet-600 transition-colors">
-            <span className="w-[42px] h-[42px] rounded-[12px] bg-violet-50 text-violet-600 flex items-center justify-center">
-              <Plus size={20} />
-            </span>
-            <span className="text-[14px] font-semibold">Add a category</span>
+              <div className="mb-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[11px] text-ink-400">Spent</span>
+                  <span className="text-xs font-semibold text-ink-600">{c.spent} <span className="text-ink-300">/ {c.budget}</span></span>
+                </div>
+                <div className="h-2 rounded-full bg-surface-sunken overflow-hidden">
+                  <div className="h-full rounded-full transition-all duration-500" style={{
+                    width: `${c.pct}%`,
+                    background: c.color,
+                  }} />
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold" style={{ color: c.color }}>{c.pct}%</span>
+                <button className="text-[11px] text-ink-300 hover:text-violet-500 transition-colors font-medium">Edit budget</button>
+              </div>
+            </div>
+          ))}
+
+          {/* Add card */}
+          <button className="rounded-[18px] border border-dashed border-line bg-surface p-5 flex flex-col items-center justify-center gap-3 text-ink-300 hover:text-ink-500 hover:border-violet-300 transition-colors cursor-pointer min-h-[180px]">
+            <div className="w-10 h-10 rounded-full border-2 border-line flex items-center justify-center">
+              <Plus size={18} />
+            </div>
+            <span className="text-sm font-medium">Add a category</span>
           </button>
         </div>
       </div>
